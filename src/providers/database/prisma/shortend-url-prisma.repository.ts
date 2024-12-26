@@ -17,9 +17,14 @@ export class ShortenedUrlPrismaRepository implements IShortenedUrlRepository {
   }
 
   async findShortenedUrlById(id: number): Promise<ShortenedUrl> {
-    const shortenedUrl = await this.prisma.shortenedUrl.findUnique({
+    const shortenedUrl = await this.prisma.shortenedUrl.update({
       where: {
         id,
+      },
+      data: {
+        accesses: {
+          increment: 1,
+        },
       },
     });
 
