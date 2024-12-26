@@ -771,6 +771,11 @@
   resolved "https://registry.npmjs.org/@pkgr/core/-/core-0.1.1.tgz"
   integrity sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==
 
+"@prisma/client@^6.1.0":
+  version "6.1.0"
+  resolved "https://registry.npmjs.org/@prisma/client/-/client-6.1.0.tgz"
+  integrity sha512-AbQYc5+EJKm1Ydfq3KxwcGiy7wIbm4/QbjCKWWoNROtvy7d6a3gmAGkKjK0iUCzh+rHV8xDhD5Cge8ke/kiy5Q==
+
 "@prisma/debug@6.1.0":
   version "6.1.0"
   resolved "https://registry.npmjs.org/@prisma/debug/-/debug-6.1.0.tgz"
@@ -3948,7 +3953,7 @@ pretty-format@^29.0.0, pretty-format@^29.7.0:
     ansi-styles "^5.0.0"
     react-is "^18.0.0"
 
-prisma@^6.1.0:
+prisma@*, prisma@^6.1.0:
   version "6.1.0"
   resolved "https://registry.npmjs.org/prisma/-/prisma-6.1.0.tgz"
   integrity sha512-aFI3Yi+ApUxkwCJJwyQSwpyzUX7YX3ihzuHNHOyv4GJg3X5tQsmRaJEnZ+ZyfHpMtnyahhmXVfbTZ+lS8ZtfKw==
