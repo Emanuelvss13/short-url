@@ -1,5 +1,5 @@
 import { ShortenedUrl } from '../../../shortener/entities/shortened-url.entity';
-import { CreateShortenedUrlDto } from '../prisma/dto/create-shortened-url.dto';
+import { CreateShortenedUrlDto } from './dto/create-shortened-url.dto';
 
 export interface IShortenedUrlRepository {
   createShortenedUrl(data: CreateShortenedUrlDto): Promise<ShortenedUrl>;

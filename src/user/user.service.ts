@@ -1,26 +1,36 @@
-import { Injectable } from '@nestjs/common';
-import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { REPOSITORY } from '../providers/constants/repo.constants';
+import { IUserRepository } from '../providers/database/repositories/user.repository';
+import { CreateUserRequest } from './dto/create-user.dto';
 
 @Injectable()
 export class UserService {
-  create(createUserDto: CreateUserDto) {
-    return 'This action adds a new user';
+  constructor(
+    @Inject(REPOSITORY.USER_REPOSITORY)
+    private readonly userRepository: IUserRepository,
+  ) {}
+
+  async create(request: CreateUserRequest) {
+    return await this.userRepository.createUser(request);
   }
 
-  findAll() {
-    return `This action returns all user`;
+  async findOne(id: number) {
+    const user = await this.userRepository.findUserById(id);
+
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    return user;
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} user`;
-  }
+  async findByEmail(email: string) {
+    const user = await this.userRepository.findUserByEmail(email);
 
-  update(id: number, updateUserDto: UpdateUserDto) {
-    return `This action updates a #${id} user`;
-  }
+    if (!user) {
+      throw new BadRequestException('Email not found');
+    }
 
-  remove(id: number) {
-    return `This action removes a #${id} user`;
+    return user;
   }
 }

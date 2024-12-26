@@ -1,3 +1,5 @@
+import { User } from '../../user/entities/user.entity';
+
 export class ShortenedUrl {
   id: number;
   accesses: number;
@@ -6,4 +8,6 @@ export class ShortenedUrl {
   createdAt: Date;
   updatedAt: Date;
   deletedAt?: Date;
+
+  user?: User;
 }
