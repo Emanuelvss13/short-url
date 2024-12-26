@@ -1,7 +1,6 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { ShortenerService } from './shortener.service';
+import { Body, Controller, Post } from '@nestjs/common';
 import { CreateShortenerDto } from './dto/create-shortener.dto';
-import { UpdateShortenerDto } from './dto/update-shortener.dto';
+import { ShortenerService } from './shortener.service';
 
 @Controller('shortener')
 export class ShortenerController {
@@ -10,25 +9,5 @@ export class ShortenerController {
   @Post()
   create(@Body() createShortenerDto: CreateShortenerDto) {
     return this.shortenerService.create(createShortenerDto);
-  }
-
-  @Get()
-  findAll() {
-    return this.shortenerService.findAll();
-  }
-
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.shortenerService.findOne(+id);
-  }
-
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateShortenerDto: UpdateShortenerDto) {
-    return this.shortenerService.update(+id, updateShortenerDto);
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.shortenerService.remove(+id);
   }
 }

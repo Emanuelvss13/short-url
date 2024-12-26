@@ -1,1 +1,3 @@
-export class CreateShortenerDto {}
+export class CreateShortenerDto {
+  sourceUrl: string;
+}

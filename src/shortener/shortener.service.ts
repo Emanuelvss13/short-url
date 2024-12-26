@@ -1,26 +1,19 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { IShorteningAlgorithm } from '../providers/shortening-algorithm/model';
 import { CreateShortenerDto } from './dto/create-shortener.dto';
-import { UpdateShortenerDto } from './dto/update-shortener.dto';
 
 @Injectable()
 export class ShortenerService {
+  constructor(
+    @Inject('ShorteningAlgorithm')
+    readonly shorteningAlgorithm: IShorteningAlgorithm,
+  ) {}
+
   create(createShortenerDto: CreateShortenerDto) {
-    return 'This action adds a new shortener';
-  }
+    const shortenedUrl = this.shorteningAlgorithm.encodeId(1232);
 
-  findAll() {
-    return `This action returns all shortener`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} shortener`;
-  }
-
-  update(id: number, updateShortenerDto: UpdateShortenerDto) {
-    return `This action updates a #${id} shortener`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} shortener`;
+    return {
+      url: `http://localhost:3000/${shortenedUrl}`,
+    };
   }
 }

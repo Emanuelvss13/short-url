@@ -1,12 +1,14 @@
-import base62 from 'base62';
+import { Injectable } from '@nestjs/common';
+import { decode, encode } from 'base62';
 import { IShorteningAlgorithm } from './model';
 
+@Injectable()
 export class base62Provider implements IShorteningAlgorithm {
   encodeId(id: number): string {
-    return base62.encode(id);
+    return encode(id);
   }
 
   decodeShortenedUrl(url: string): number {
-    return base62.decode(url);
+    return decode(url);
   }
 }
