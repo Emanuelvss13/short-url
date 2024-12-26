@@ -1,4 +1,4 @@
 import { PartialType } from '@nestjs/mapped-types';
-import { CreateShortenerDto } from './create-shortener.dto';
+import { CreateShortenerRequest } from './create-shortener.dto';
 
-export class UpdateShortenerDto extends PartialType(CreateShortenerDto) {}
+export class UpdateShortenerDto extends PartialType(CreateShortenerRequest) {}

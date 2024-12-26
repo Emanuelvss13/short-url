@@ -2,7 +2,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { IShortenedUrlRepository } from '../providers/database/repositories/shortened-url.repository';
 import { IShorteningAlgorithm } from '../providers/shortening-algorithm/model';
-import { CreateShortenerDto } from './dto/create-shortener.dto';
+import { CreateShortenerRequest } from './dto/create-shortener.dto';
 
 @Injectable()
 export class ShortenerService {
@@ -14,7 +14,7 @@ export class ShortenerService {
     private configService: ConfigService,
   ) {}
 
-  async shortenUrl(request: CreateShortenerDto) {
+  async shortenUrl(request: CreateShortenerRequest) {
     const shortenedUrl =
       await this.shortenedUrlRepository.createShortenedUrl(request);
 
