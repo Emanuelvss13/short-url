@@ -1,4 +1,5 @@
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { IShortenedUrlRepository } from '../providers/database/repositories/shortened-url.repository';
 import { IShorteningAlgorithm } from '../providers/shortening-algorithm/model';
 import { CreateShortenerDto } from './dto/create-shortener.dto';
@@ -10,6 +11,7 @@ export class ShortenerService {
     readonly shorteningAlgorithm: IShorteningAlgorithm,
     @Inject('ShortenedUrlRepository')
     readonly shortenedUrlRepository: IShortenedUrlRepository,
+    private configService: ConfigService,
   ) {}
 
   async shortenUrl(request: CreateShortenerDto) {
@@ -18,10 +20,8 @@ export class ShortenerService {
 
     const urlCode = this.shorteningAlgorithm.encodeId(shortenedUrl.id);
 
-    console.log(urlCode);
-
     return {
-      url: `http://localhost:3000/${urlCode}`,
+      url: `${this.configService.get<string>('API_DOMAIN')}/${urlCode}`,
     };
   }
 
