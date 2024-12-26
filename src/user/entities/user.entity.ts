@@ -5,5 +5,5 @@ export class User {
   email: string;
   password: string;
 
-  shortenedUrls: ShortenedUrl[];
+  ShortenedUrl?: ShortenedUrl[];
 }
