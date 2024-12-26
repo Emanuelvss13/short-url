@@ -15,4 +15,19 @@ model ShortenedUrl {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deleteDate DateTime?
+
+  userId Int?
+  user   User? @relation(fields: [userId], references: [id])
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  deleteDate DateTime?
+
+  ShortenedUrl ShortenedUrl[]
 }
