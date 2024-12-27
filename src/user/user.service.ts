@@ -21,11 +21,7 @@ export class UserService {
   }: IUpdateSourceUrlRequest) {
     const user = await this.findById(userId);
 
-    if (
-      !user.ShortenedUrl.find(
-        (shortenedUrl) => shortenedUrl.id === shortenedUrlId,
-      )
-    ) {
+    if (!user.urlBelongsToUser(shortenedUrlId)) {
       throw new BadRequestException(
         'This shortened url does not belong to this user',
       );
