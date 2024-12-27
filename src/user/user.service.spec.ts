@@ -29,7 +29,7 @@ describe('UserService', () => {
           provide: REPOSITORY.SHORTENED_URL_REPOSITORY, // Certifique-se de registrar corretamente este provedor
           useValue: {
             findShortenedUrlById: jest.fn(),
-            deleteShortenedUrlById: jest.fn(),
+            softDeleteShortenedUrlById: jest.fn(),
             updateSourceUrlByShortenedUrlId: jest.fn(),
           },
         },
@@ -157,7 +157,7 @@ describe('UserService', () => {
         .spyOn(shortenedUrlRepository, 'findShortenedUrlById')
         .mockResolvedValue(shortenedUrl);
       jest
-        .spyOn(shortenedUrlRepository, 'deleteShortenedUrlById')
+        .spyOn(shortenedUrlRepository, 'softDeleteShortenedUrlById')
         .mockResolvedValue(undefined);
 
       const result = await service.deleteShortenedUrl(user, shortenedUrl.id);
