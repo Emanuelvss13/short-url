@@ -23,8 +23,6 @@ export class ShortenerController {
     @CurrentUser() user: User,
     @Body() createShortenerInput: CreateShortenerInput,
   ) {
-    console.log(user);
-
     return this.shortenerService.shortenUrl({ ...createShortenerInput, user });
   }
 
