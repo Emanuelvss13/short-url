@@ -7,10 +7,13 @@ import { IShortenedUrlRepository } from '../repositories/shortened-url.repositor
 @Injectable()
 export class ShortenedUrlPrismaRepository implements IShortenedUrlRepository {
   constructor(private readonly prisma: PrismaService) {}
-  async deleteShortenedUrlById(id: number): Promise<boolean> {
-    await this.prisma.shortenedUrl.delete({
+  async softDeleteShortenedUrlById(id: number): Promise<boolean> {
+    await this.prisma.shortenedUrl.update({
       where: {
         id,
+      },
+      data: {
+        deleteDate: new Date(),
       },
     });
 

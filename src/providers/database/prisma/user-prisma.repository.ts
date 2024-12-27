@@ -32,7 +32,11 @@ export class UserPrismaRepository implements IUserRepository {
         id,
       },
       include: {
-        ShortenedUrl: true,
+        ShortenedUrl: {
+          where: {
+            deleteDate: null,
+          },
+        },
       },
     });
 

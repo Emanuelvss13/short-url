@@ -169,7 +169,7 @@ describe('UserService', () => {
         shortenedUrl.id,
       );
       expect(
-        shortenedUrlRepository.deleteShortenedUrlById,
+        shortenedUrlRepository.softDeleteShortenedUrlById,
       ).toHaveBeenCalledWith(shortenedUrl.id);
       expect(user.urlBelongsToUser).toHaveBeenCalledWith(shortenedUrl.id);
     });

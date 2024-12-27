@@ -30,7 +30,9 @@ export class UserService {
     }
 
     try {
-      await this.shortenedUrlRepository.deleteShortenedUrlById(shortenedUrlId);
+      await this.shortenedUrlRepository.softDeleteShortenedUrlById(
+        shortenedUrlId,
+      );
     } catch (error) {
       throw new BadRequestException('Unable to delete shortened url:', error);
     }
