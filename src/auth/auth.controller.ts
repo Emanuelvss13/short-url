@@ -1,8 +1,16 @@
-import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { User } from '../user/entities/user.entity';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './decorators/auth.guard';
 import { CurrentUser } from './decorators/current-user.decorator';
+import { LoginInput } from './dto/login.input';
 import { IUserWithoutPassword } from './response/user-without-password.response';
 
 @Controller()
@@ -10,8 +18,9 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Post('login')
-  async login(@Body() data: { email: string; password: string }) {
-    return this.authService.login(data.email, data.password);
+  @HttpCode(200)
+  async login(@Body() { email, password }: LoginInput) {
+    return this.authService.login(email, password);
   }
 
   @Get('/user/whoami')
