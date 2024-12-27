@@ -1,5 +1,9 @@
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Patch, Post, UseGuards } from '@nestjs/common';
+import { JwtAuthGuard } from '../auth/decorators/auth.guard';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
 import { CreateUserRequest } from './dto/create-user.dto';
+import { UpdateSourceUrlInput } from './dto/update-source-url.input';
+import { User } from './entities/user.entity';
 import { UserService } from './user.service';
 
 @Controller('user')
@@ -14,5 +18,14 @@ export class UserController {
   @Get()
   findOne(@Body('email') email: string) {
     return this.userService.findByEmail(email);
+  }
+
+  @UseGuards(JwtAuthGuard)
+  @Patch('/update-source-url')
+  updateSourceUrl(
+    @CurrentUser() { id }: User,
+    @Body() input: UpdateSourceUrlInput,
+  ) {
+    return this.userService.updateSourceUrl({ userId: id, ...input });
   }
 }

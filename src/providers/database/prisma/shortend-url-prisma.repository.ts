@@ -8,6 +8,22 @@ import { IShortenedUrlRepository } from '../repositories/shortened-url.repositor
 export class ShortenedUrlPrismaRepository implements IShortenedUrlRepository {
   constructor(private readonly prisma: PrismaService) {}
 
+  async updateSourceUrlByShortenedUrlId(
+    shortenedUrlId: number,
+    newSourceUrl: string,
+  ): Promise<boolean> {
+    await this.prisma.shortenedUrl.update({
+      where: {
+        id: shortenedUrlId,
+      },
+      data: {
+        sourceUrl: newSourceUrl,
+      },
+    });
+
+    return true;
+  }
+
   createShortenedUrl({
     sourceUrl,
     user,

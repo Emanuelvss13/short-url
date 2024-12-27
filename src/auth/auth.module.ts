@@ -4,9 +4,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PassportModule } from '@nestjs/passport';
 import { PrismaService } from '../../prisma/prisma-client';
-import { REPOSITORY } from '../providers/constants/repo.constants';
 import { BcryptProvider } from '../providers/criptography/bcrypt/bcrypt.provider';
-import { UserPrismaRepository } from '../providers/database/prisma/user-prisma.repository';
 import { UserModule } from '../user/user.module';
 import { UserService } from '../user/user.service';
 import { AuthController } from './auth.controller';
@@ -31,10 +29,7 @@ import { JwtStrategy } from './strategies/jwt.strategy';
     AuthService,
     JwtStrategy,
     UserService,
-    {
-      provide: REPOSITORY.USER_REPOSITORY,
-      useClass: UserPrismaRepository,
-    },
+
     {
       provide: 'BcryptProvider',
       useClass: BcryptProvider,
