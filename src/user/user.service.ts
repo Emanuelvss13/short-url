@@ -4,6 +4,7 @@ import { IShortenedUrlRepository } from '../providers/database/repositories/shor
 import { IUserRepository } from '../providers/database/repositories/user.repository';
 import { CreateUserRequest } from './dto/create-user.dto';
 import { IUpdateSourceUrlRequest } from './dto/update-source-url.request';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
@@ -14,12 +15,45 @@ export class UserService {
     readonly shortenedUrlRepository: IShortenedUrlRepository,
   ) {}
 
+  async deleteShortenedUrl(user: User, shortenedUrlId: number) {
+    const shortenedUrl =
+      await this.shortenedUrlRepository.findShortenedUrlById(shortenedUrlId);
+
+    if (!shortenedUrl) {
+      throw new BadRequestException('Shortened url not found');
+    }
+
+    if (!user.urlBelongsToUser(shortenedUrlId)) {
+      throw new BadRequestException(
+        'This shortened url does not belong to this user',
+      );
+    }
+
+    try {
+      await this.shortenedUrlRepository.deleteShortenedUrlById(shortenedUrlId);
+    } catch (error) {
+      throw new BadRequestException('Unable to delete shortened url:', error);
+    }
+
+    return {
+      message: 'Shortened url deleted successfully',
+      statusCode: 200,
+    };
+  }
+
   async updateSourceUrl({
     shortenedUrlId,
     userId,
     newSourceUrl,
   }: IUpdateSourceUrlRequest) {
     const user = await this.findById(userId);
+
+    const shortenedUrl =
+      await this.shortenedUrlRepository.findShortenedUrlById(shortenedUrlId);
+
+    if (!shortenedUrl) {
+      throw new BadRequestException('Shortened url not found');
+    }
 
     if (!user.urlBelongsToUser(shortenedUrlId)) {
       throw new BadRequestException(
