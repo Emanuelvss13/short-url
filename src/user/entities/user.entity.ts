@@ -6,4 +6,8 @@ export class User {
   password: string;
 
   ShortenedUrl?: ShortenedUrl[];
+
+  public static fromPrismaModel(user: any): User {
+    return Object.assign(new User(), user);
+  }
 }

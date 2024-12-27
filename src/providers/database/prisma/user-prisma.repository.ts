@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../prisma/prisma-client';
+import { User } from '../../../user/entities/user.entity';
 import { ICreateUserDto } from '../repositories/dto/create-user.dto';
 import { IUserRepository } from '../repositories/user.repository';
-import { User } from './../../../../node_modules/.prisma/client/index.d';
 
 @Injectable()
 export class UserPrismaRepository implements IUserRepository {
@@ -15,7 +15,7 @@ export class UserPrismaRepository implements IUserRepository {
       },
     });
 
-    return user || null;
+    return User.fromPrismaModel(user) || null;
   }
 
   async createUser(data: ICreateUserDto): Promise<User> {
@@ -23,7 +23,7 @@ export class UserPrismaRepository implements IUserRepository {
       data,
     });
 
-    return user;
+    return User.fromPrismaModel(user);
   }
 
   async findUserById(id: number): Promise<User | null> {
@@ -36,6 +36,6 @@ export class UserPrismaRepository implements IUserRepository {
       },
     });
 
-    return user || null;
+    return User.fromPrismaModel(user) || null;
   }
 }
