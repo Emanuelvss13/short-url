@@ -1,14 +1,31 @@
-import { Body, Controller, Get, Param, Post, Redirect } from '@nestjs/common';
-import { CreateShortenerRequest } from './dto/create-shortener.dto';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  Redirect,
+  UseGuards,
+} from '@nestjs/common';
+import { CurrentUser } from '../auth/decorators/current-user.decorator';
+import { UserAuthGuard } from '../auth/decorators/user.guard';
+import { User } from '../user/entities/user.entity';
+import { CreateShortenerInput } from './dto/create-shortener.input';
 import { ShortenerService } from './shortener.service';
 
 @Controller()
 export class ShortenerController {
   constructor(private readonly shortenerService: ShortenerService) {}
 
+  @UseGuards(UserAuthGuard)
   @Post('/shortener')
-  create(@Body() createShortenerDto: CreateShortenerRequest) {
-    return this.shortenerService.shortenUrl(createShortenerDto);
+  create(
+    @CurrentUser() user: User,
+    @Body() createShortenerInput: CreateShortenerInput,
+  ) {
+    console.log(user);
+
+    return this.shortenerService.shortenUrl({ ...createShortenerInput, user });
   }
 
   @Get(':shortUrl')

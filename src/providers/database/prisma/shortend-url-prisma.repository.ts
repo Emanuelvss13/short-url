@@ -8,9 +8,12 @@ import { IShortenedUrlRepository } from '../repositories/shortened-url.repositor
 export class ShortenedUrlPrismaRepository implements IShortenedUrlRepository {
   constructor(private readonly prisma: PrismaService) {}
 
-  createShortenedUrl(data: CreateShortenedUrlDto): Promise<ShortenedUrl> {
+  createShortenedUrl({
+    sourceUrl,
+    user,
+  }: CreateShortenedUrlDto): Promise<ShortenedUrl> {
     const shortenedUrl = this.prisma.shortenedUrl.create({
-      data,
+      data: { sourceUrl, ...(user && { userId: user.id }) },
     });
 
     return shortenedUrl;

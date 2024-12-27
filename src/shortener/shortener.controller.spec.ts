@@ -1,6 +1,6 @@
 import { BadRequestException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { CreateShortenerRequest } from './dto/create-shortener.dto';
+import { CreateShortenerInput } from './dto/create-shortener.input';
 import { ShortenerController } from './shortener.controller';
 import { ShortenerService } from './shortener.service';
 
@@ -28,7 +28,7 @@ describe('ShortenerController', () => {
 
   describe('create', () => {
     it('should shorten a URL and return the result', async () => {
-      const createShortenerDto: CreateShortenerRequest = {
+      const createShortenerDto: CreateShortenerInput = {
         sourceUrl: 'http://example.com',
       };
       const shortenedUrl = { url: 'http://localhost:3000/abc123' };
