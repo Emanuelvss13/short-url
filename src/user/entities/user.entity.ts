@@ -8,7 +8,7 @@ export class User {
   ShortenedUrl?: ShortenedUrl[];
 
   urlBelongsToUser(shortenedUrlId: number) {
-    return this.ShortenedUrl.find(
+    return !!this.ShortenedUrl.find(
       (shortenedUrl) => shortenedUrl.id === shortenedUrlId,
     );
   }
