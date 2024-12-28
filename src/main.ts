@@ -1,10 +1,26 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import * as Sentry from '@sentry/nestjs';
+import { nodeProfilingIntegration } from '@sentry/profiling-node';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  Sentry.init({
+    dsn: process.env.SENTRY_DNS,
+    integrations: [nodeProfilingIntegration()],
+    tracesSampleRate: 1.0,
+  });
+
+  app.useGlobalPipes(
+    new ValidationPipe({
+      whitelist: true,
+      forbidNonWhitelisted: true,
+      transform: true, // Essa opção automaticamente transforma objetos de entrada
+    }),
+  );
 
   const config = new DocumentBuilder()
     .setTitle('Short URL API')
@@ -13,8 +29,6 @@ async function bootstrap() {
     )
     .setVersion('0.1.0')
     .build();
-
-  app.useGlobalPipes(new ValidationPipe());
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, documentFactory);
