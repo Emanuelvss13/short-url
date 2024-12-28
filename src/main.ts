@@ -18,7 +18,7 @@ async function bootstrap() {
     new ValidationPipe({
       whitelist: true,
       forbidNonWhitelisted: true,
-      transform: true, // Essa opção automaticamente transforma objetos de entrada
+      transform: true,
     }),
   );
 
@@ -27,7 +27,7 @@ async function bootstrap() {
     .setDescription(
       'An URL shortener is a tool that takes a long URL and converts it into a shorter, more compact version while still redirecting users to the original destination. This is often used to make URLs more manageable, easier to share, and aesthetically cleaner for things like social media posts, marketing campaigns, or emails.',
     )
-    .setVersion('0.1.0')
+    .setVersion('0.2.0')
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
