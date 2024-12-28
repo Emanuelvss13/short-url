@@ -43,8 +43,8 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            nvm use --lts
-            npm install -g pm2
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh   
             cd short-url
             git pull origin main
             npm install
