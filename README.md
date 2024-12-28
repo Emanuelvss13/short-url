@@ -38,8 +38,7 @@ Deverá ser implementado um projeto com NodeJS na última versão estável, send
 
 CI/CD: Configurar integração e deploy contínuos (CI/CD) para o deploy automático da API. Utilizar uma plataforma que suporte CI/CD, de forma que as atualizações aprovadas no repositório GitHub sejam automaticamente publicadas em produção.
 
-Docker: Configurar Docker para que o ambiente seja replicável localmente e durante o CI/CD, garantindo que a API e os testes rodem com consistência.
- 
+Deploy Link: ```http://147.182.194.163:3000/```
 
 ## Instruções:
  
