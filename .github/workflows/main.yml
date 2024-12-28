@@ -43,6 +43,8 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            npm list -g pm2
+            node -v
             cd short-url
             git pull origin main
             npm install
