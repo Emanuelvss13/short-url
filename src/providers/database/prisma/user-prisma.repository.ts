@@ -15,7 +15,7 @@ export class UserPrismaRepository implements IUserRepository {
       },
     });
 
-    return User.fromPrismaModel(user) || null;
+    return user ? User.fromPrismaModel(user) : null;
   }
 
   async createUser(data: ICreateUserDto): Promise<User> {
@@ -23,7 +23,7 @@ export class UserPrismaRepository implements IUserRepository {
       data,
     });
 
-    return User.fromPrismaModel(user);
+    return user ? User.fromPrismaModel(user) : null;
   }
 
   async findUserById(id: number): Promise<User | null> {
@@ -40,6 +40,6 @@ export class UserPrismaRepository implements IUserRepository {
       },
     });
 
-    return User.fromPrismaModel(user) || null;
+    return user ? User.fromPrismaModel(user) : null;
   }
 }
