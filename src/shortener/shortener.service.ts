@@ -39,6 +39,10 @@ export class ShortenerService {
       throw new BadRequestException('Url expired');
     }
 
+    await this.shortenedUrlRepository.increaseAccessCountByShortenedUrlId(
+      shortenedUrl.id,
+    );
+
     return {
       url: shortenedUrl.sourceUrl,
     };

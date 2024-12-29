@@ -1,5 +1,5 @@
 import { ApiProperty, ApiSchema } from '@nestjs/swagger';
-import { IsEmail } from 'class-validator';
+import { IsEmail, IsString } from 'class-validator';
 
 @ApiSchema({ name: 'LoginInput' })
 export class LoginInput {
@@ -8,5 +8,6 @@ export class LoginInput {
   email: string;
 
   @ApiProperty()
+  @IsString()
   password: string;
 }

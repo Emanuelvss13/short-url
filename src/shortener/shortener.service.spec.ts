@@ -28,6 +28,7 @@ describe('ShortenerService', () => {
           useValue: {
             createShortenedUrl: jest.fn(),
             findShortenedUrlById: jest.fn(),
+            increaseAccessCountByShortenedUrlId: jest.fn(),
           },
         },
         {

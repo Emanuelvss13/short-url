@@ -67,4 +67,19 @@ export class ShortenedUrlPrismaRepository implements IShortenedUrlRepository {
 
     return shortenedUrl ? ShortenedUrl.fromPrismaModel(shortenedUrl) : null;
   }
+
+  async increaseAccessCountByShortenedUrlId(id: number): Promise<boolean> {
+    await this.prisma.shortenedUrl.update({
+      where: {
+        id,
+      },
+      data: {
+        accesses: {
+          increment: 1,
+        },
+      },
+    });
+
+    return true;
+  }
 }

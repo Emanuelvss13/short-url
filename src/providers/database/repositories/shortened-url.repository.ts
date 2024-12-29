@@ -9,4 +9,5 @@ export interface IShortenedUrlRepository {
     newSourceUrl: string,
   ): Promise<boolean>;
   softDeleteShortenedUrlById(id: number): Promise<boolean>;
+  increaseAccessCountByShortenedUrlId(id: number): Promise<boolean>;
 }
