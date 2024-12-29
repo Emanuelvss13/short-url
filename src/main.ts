@@ -11,7 +11,7 @@ async function bootstrap() {
   Sentry.init({
     dsn: process.env.SENTRY_DNS,
     integrations: [nodeProfilingIntegration()],
-    tracesSampleRate: 1.0,
+    tracesSampleRate: +process.env.SENTRY_TRACE_SAMPLE_RATE,
   });
 
   app.useGlobalPipes(
@@ -23,11 +23,9 @@ async function bootstrap() {
   );
 
   const config = new DocumentBuilder()
-    .setTitle('Short URL API')
-    .setDescription(
-      'An URL shortener is a tool that takes a long URL and converts it into a shorter, more compact version while still redirecting users to the original destination. This is often used to make URLs more manageable, easier to share, and aesthetically cleaner for things like social media posts, marketing campaigns, or emails.',
-    )
-    .setVersion('0.4.0')
+    .setTitle(process.env.APP_TITLE)
+    .setDescription(process.env.APP_DESCRIPTION)
+    .setVersion(process.env.APP_VERSION)
     .build();
 
   const documentFactory = () => SwaggerModule.createDocument(app, config);
