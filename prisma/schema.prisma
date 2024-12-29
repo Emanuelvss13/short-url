@@ -28,6 +28,7 @@ model User {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
   deleteDate DateTime?
+  expiredAt DateTime?
 
   ShortenedUrl ShortenedUrl[]
 }

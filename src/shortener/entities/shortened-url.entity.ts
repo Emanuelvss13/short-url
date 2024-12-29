@@ -9,5 +9,14 @@ export class ShortenedUrl {
   updatedAt: Date;
   deletedAt?: Date;
 
+  expiredAt?: Date;
   user?: User;
+
+  hasExpired(): boolean {
+    return this.expiredAt && this.expiredAt.getTime() > Date.now();
+  }
+
+  public static fromPrismaModel(shortenedUrl: any): ShortenedUrl {
+    return Object.assign(new ShortenedUrl(), shortenedUrl);
+  }
 }
