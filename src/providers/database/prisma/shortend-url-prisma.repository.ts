@@ -36,15 +36,15 @@ export class ShortenedUrlPrismaRepository implements IShortenedUrlRepository {
     return true;
   }
 
-  createShortenedUrl({
+  async createShortenedUrl({
     sourceUrl,
     user,
   }: CreateShortenedUrlDto): Promise<ShortenedUrl> {
-    const shortenedUrl = this.prisma.shortenedUrl.create({
+    const shortenedUrl = await this.prisma.shortenedUrl.create({
       data: { sourceUrl, ...(user && { userId: user.id }) },
     });
 
-    return shortenedUrl;
+    return shortenedUrl ? ShortenedUrl.fromPrismaModel(shortenedUrl) : null;
   }
 
   async findShortenedUrlById(id: number): Promise<ShortenedUrl> {
@@ -54,6 +54,6 @@ export class ShortenedUrlPrismaRepository implements IShortenedUrlRepository {
       },
     });
 
-    return shortenedUrl || null;
+    return shortenedUrl ? ShortenedUrl.fromPrismaModel(shortenedUrl) : null;
   }
 }
