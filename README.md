@@ -35,19 +35,23 @@ Deverá ser implementado um projeto com NodeJS na última versão estável, send
 ### Funcionalidades adicionais:
 - Possibilidade de marcar uma data para a url encurtada expirar.
 
+### Sugestões de novas funcionabilidades:
+- Fornecer as informações do link encurtado para usuário assinantes/pagantes abrangendo aspectos de uso, desempenho e segurança. Elas incluem o número total de cliques, cliques únicos, diários e por geolocalização, além de dados sobre a origem do tráfego. Desempenho é monitorado através do tempo de redirecionamento, latência, taxa de erros e sucesso. Outras métricas analisam URLs ativas, inativas e expiradas, além do comportamento dos usuários, como URLs criadas e cliques por usuário. Métricas de segurança rastreiam acessos inválidos e URLs maliciosas, enquanto métricas de retenção medem a fidelidade dos usuários.
+
 ## Integração e Deploy
 
  GitHub Actions: Configurar GitHub Actions para rodar os testes automaticamente em cada push e pull request. Utilizar uma imagem Docker para garantir consistência no ambiente de execução.
 
 CI/CD: Configurar integração e deploy contínuos (CI/CD) para o deploy automático da API. Utilizar uma plataforma que suporte CI/CD, de forma que as atualizações aprovadas no repositório GitHub sejam automaticamente publicadas em produção.
 
-Deploy Link: ```http://147.182.194.163:3000/```
+Deploy Link: ```http://147.182.194.163:3000/api```
 
 ## Pontos de melhoria caso o sistema necessite escalar horizontalmente e quais serão os maiores desafios:
- - Um ponto de melhoria excelente é utilizar cache para urls mais buscadas, além da escalabilidade de banco de 
- dados e otimização de consultas.
- - Um dos maiores desafios ao escalar horizontalmente é a manutenção de consistência de dados entre instâncias.
-
+ - A escalabilidade horizontal pode ser aprimorada através da implementação de um sistema de cache distribuído para URLs frequentemente acessadas (ex.: Redis ou 
+   Memcached) e otimização de consultas com índices eficientes. Além disso, a adoção de um banco de dados escalável, como sharding ou particionamento, ajudará a 
+   distribuir a carga.
+ - Um grande desafio ao escalar será manter a consistência de dados entre múltiplas instâncias, o que pode ser abordado utilizando técnicas como replicação 
+   síncrona/assíncrona, quorum reads/writes, ou até estratégias de eventual consistency para reduzir a sobrecarga de sincronização.
 
 ## Instruções:
  
