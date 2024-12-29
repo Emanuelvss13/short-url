@@ -3,13 +3,13 @@ import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { IShortenedUrlRepository } from '../providers/database/repositories/shortened-url.repository';
 import { IShorteningAlgorithm } from '../providers/shortening-algorithm/model';
+import { CreateShortenerRequest } from './dto/create-shortener.request';
 import { ShortenerService } from './shortener.service';
 
 describe('ShortenerService', () => {
-  let service: ShortenerService;
+  let shortenerService: ShortenerService;
   let shorteningAlgorithm: IShorteningAlgorithm;
   let shortenedUrlRepository: IShortenedUrlRepository;
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   let configService: ConfigService;
 
   beforeEach(async () => {
@@ -33,13 +33,13 @@ describe('ShortenerService', () => {
         {
           provide: ConfigService,
           useValue: {
-            get: jest.fn().mockReturnValue('http://localhost:3000'),
+            get: jest.fn(),
           },
         },
       ],
     }).compile();
 
-    service = module.get<ShortenerService>(ShortenerService);
+    shortenerService = module.get<ShortenerService>(ShortenerService);
     shorteningAlgorithm = module.get<IShorteningAlgorithm>(
       'ShorteningAlgorithm',
     );
@@ -50,56 +50,120 @@ describe('ShortenerService', () => {
   });
 
   describe('shortenUrl', () => {
-    it('should return the shortened URL correctly', async () => {
-      const createShortenerRequest = { sourceUrl: 'http://example.com' };
+    it('should return the shortened URL', async () => {
+      const request: CreateShortenerRequest = {
+        sourceUrl: 'http://example.com',
+      };
+      const createdShortenedUrl = { id: 1 };
+      const encodedUrlCode = 'abc123';
+      const apiDomain = 'http://short.ly';
 
-      const shortenedUrlMock = { id: 1, sourceUrl: 'http://example.com' };
+      // Mock the methods
       shortenedUrlRepository.createShortenedUrl = jest
         .fn()
-        .mockResolvedValue(shortenedUrlMock);
-      shorteningAlgorithm.encodeId = jest.fn().mockReturnValue('abc123');
+        .mockResolvedValue(createdShortenedUrl);
+      shorteningAlgorithm.encodeId = jest.fn().mockReturnValue(encodedUrlCode);
+      configService.get = jest.fn().mockReturnValue(apiDomain);
 
-      const result = await service.shortenUrl(createShortenerRequest);
+      // Call the method
+      const result = await shortenerService.shortenUrl(request);
 
+      // Assertions
       expect(shortenedUrlRepository.createShortenedUrl).toHaveBeenCalledWith(
-        createShortenerRequest,
+        request,
       );
-      expect(shorteningAlgorithm.encodeId).toHaveBeenCalledWith(1);
-      expect(result).toEqual({ url: 'http://localhost:3000/abc123' });
+      expect(shorteningAlgorithm.encodeId).toHaveBeenCalledWith(
+        createdShortenedUrl.id,
+      );
+      expect(configService.get).toHaveBeenCalledWith('API_DOMAIN');
+      expect(result).toEqual({ url: `${apiDomain}/${encodedUrlCode}` });
     });
   });
 
   describe('decodeUrl', () => {
-    it('should return the original URL when decoding a shortUrl', async () => {
-      const shortUrl = 'abc123';
-      shorteningAlgorithm.decodeShortenedUrl = jest.fn().mockReturnValue(1);
+    it('should return the original URL if the shortened URL exists and has not expired', async () => {
+      const shortUrl = 'http://short.ly/abc123';
+      const shortUrlId = 1;
+      const foundShortenedUrl = {
+        id: 1,
+        sourceUrl: 'http://example.com',
+        hasExpired: jest.fn().mockReturnValue(false),
+      };
 
-      const shortenedUrlMock = { id: 1, sourceUrl: 'http://example.com' };
+      // Mock the methods
+      shorteningAlgorithm.decodeShortenedUrl = jest
+        .fn()
+        .mockReturnValue(shortUrlId);
       shortenedUrlRepository.findShortenedUrlById = jest
         .fn()
-        .mockResolvedValue(shortenedUrlMock);
+        .mockResolvedValue(foundShortenedUrl);
 
-      const result = await service.decodeUrl(shortUrl);
+      // Call the method
+      const result = await shortenerService.decodeUrl(shortUrl);
 
+      // Assertions
       expect(shorteningAlgorithm.decodeShortenedUrl).toHaveBeenCalledWith(
         shortUrl,
       );
       expect(shortenedUrlRepository.findShortenedUrlById).toHaveBeenCalledWith(
-        1,
+        shortUrlId,
       );
-      expect(result).toEqual({ url: 'http://example.com' });
+      expect(foundShortenedUrl.hasExpired).toHaveBeenCalled();
+      expect(result).toEqual({ url: foundShortenedUrl.sourceUrl });
     });
 
-    it('should throw an exception if the shortened URL is not found', async () => {
-      const shortUrl = 'abc123';
-      shorteningAlgorithm.decodeShortenedUrl = jest.fn().mockReturnValue(1);
+    it('should throw BadRequestException if the shortened URL does not exist', async () => {
+      const shortUrl = 'http://short.ly/abc123';
+      const shortUrlId = 1;
+
+      // Mock the methods
+      shorteningAlgorithm.decodeShortenedUrl = jest
+        .fn()
+        .mockReturnValue(shortUrlId);
       shortenedUrlRepository.findShortenedUrlById = jest
         .fn()
         .mockResolvedValue(null);
 
-      await expect(service.decodeUrl(shortUrl)).rejects.toThrow(
+      // Call the method and expect exception
+      await expect(shortenerService.decodeUrl(shortUrl)).rejects.toThrow(
         BadRequestException,
       );
+      expect(shorteningAlgorithm.decodeShortenedUrl).toHaveBeenCalledWith(
+        shortUrl,
+      );
+      expect(shortenedUrlRepository.findShortenedUrlById).toHaveBeenCalledWith(
+        shortUrlId,
+      );
+    });
+
+    it('should throw BadRequestException if the shortened URL has expired', async () => {
+      const shortUrl = 'http://short.ly/abc123';
+      const shortUrlId = 1;
+      const foundShortenedUrl = {
+        id: 1,
+        sourceUrl: 'http://example.com',
+        hasExpired: jest.fn().mockReturnValue(true),
+      };
+
+      // Mock the methods
+      shorteningAlgorithm.decodeShortenedUrl = jest
+        .fn()
+        .mockReturnValue(shortUrlId);
+      shortenedUrlRepository.findShortenedUrlById = jest
+        .fn()
+        .mockResolvedValue(foundShortenedUrl);
+
+      // Call the method and expect exception
+      await expect(shortenerService.decodeUrl(shortUrl)).rejects.toThrow(
+        BadRequestException,
+      );
+      expect(shorteningAlgorithm.decodeShortenedUrl).toHaveBeenCalledWith(
+        shortUrl,
+      );
+      expect(shortenedUrlRepository.findShortenedUrlById).toHaveBeenCalledWith(
+        shortUrlId,
+      );
+      expect(foundShortenedUrl.hasExpired).toHaveBeenCalled();
     });
   });
 });
