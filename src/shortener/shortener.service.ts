@@ -35,6 +35,10 @@ export class ShortenerService {
       throw new BadRequestException('Url not found');
     }
 
+    if (shortenedUrl.hasExpired()) {
+      throw new BadRequestException('Url expired');
+    }
+
     return {
       url: shortenedUrl.sourceUrl,
     };

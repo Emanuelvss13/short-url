@@ -39,9 +39,14 @@ export class ShortenedUrlPrismaRepository implements IShortenedUrlRepository {
   async createShortenedUrl({
     sourceUrl,
     user,
+    expiredAt,
   }: CreateShortenedUrlDto): Promise<ShortenedUrl> {
     const shortenedUrl = await this.prisma.shortenedUrl.create({
-      data: { sourceUrl, ...(user && { userId: user.id }) },
+      data: {
+        sourceUrl,
+        ...(user && { userId: user.id }),
+        ...(expiredAt && { expiredAt }),
+      },
     });
 
     return shortenedUrl ? ShortenedUrl.fromPrismaModel(shortenedUrl) : null;

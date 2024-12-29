@@ -13,7 +13,7 @@ export class ShortenedUrl {
   user?: User;
 
   hasExpired(): boolean {
-    return this.expiredAt && this.expiredAt.getTime() > Date.now();
+    return this.expiredAt && this.expiredAt.getTime() < Date.now();
   }
 
   public static fromPrismaModel(shortenedUrl: any): ShortenedUrl {
