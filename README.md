@@ -30,7 +30,10 @@ Deverá ser implementado um projeto com NodeJS na última versão estável, send
  - Quando um usuário listar os urls deve aparecer na listagem a quantidade de cliques.
  - Todos os registros devem ter uma forma de saber quando foram atualizados.
  - Os registros só poderão ser deletados logicamente do banco, ou seja, deverá ter um campo que guarda a data de exclusão do registro, caso ela esteja nula é 
- porque ele é válido, caso esteja preenchida é porque ele foi excluído e nenhuma operação de leitura ou escrita pode ser realizada por ele.
+   porque ele é válido, caso esteja preenchida é porque ele foi excluído e nenhuma operação de leitura ou escrita pode ser realizada por ele.
+
+### Funcionalidades adicionais:
+- Possibilidade de marcar uma data para a url encurtada expirar.
 
 ## Integração e Deploy
 
