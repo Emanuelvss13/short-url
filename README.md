@@ -40,6 +40,12 @@ CI/CD: Configurar integração e deploy contínuos (CI/CD) para o deploy automá
 
 Deploy Link: ```http://147.182.194.163:3000/```
 
+## Pontos de melhoria caso o sistema necessite escalar horizontalmente e quais serão os maiores desafios:
+ - Um ponto de melhoria excelente é utilizar cache para urls mais buscadas, além da escalabilidade de banco de 
+ dados e otimização de consultas.
+ - Um dos maiores desafios ao escalar horizontalmente é a manutenção de consistência de dados entre instâncias.
+
+
 ## Instruções:
  
 ```bash
