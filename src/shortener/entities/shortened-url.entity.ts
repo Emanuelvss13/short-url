@@ -12,7 +12,7 @@ export class ShortenedUrl {
   expiredAt?: Date;
   user?: User;
 
-  hasExpired(): boolean {
+  public hasExpired(): boolean {
     return this.expiredAt && this.expiredAt.getTime() < Date.now();
   }
 
