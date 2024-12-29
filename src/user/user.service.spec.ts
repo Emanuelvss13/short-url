@@ -152,6 +152,7 @@ describe('UserService', () => {
         deletedAt: null,
         updatedAt: new Date(),
         accesses: 0,
+        hasExpired: jest.fn().mockReturnValue(false),
       };
       jest
         .spyOn(shortenedUrlRepository, 'findShortenedUrlById')
@@ -201,6 +202,7 @@ describe('UserService', () => {
         deletedAt: null,
         updatedAt: new Date(),
         accesses: 0,
+        hasExpired: jest.fn().mockReturnValue(false),
       };
       jest
         .spyOn(shortenedUrlRepository, 'findShortenedUrlById')
@@ -227,6 +229,7 @@ describe('UserService', () => {
         deletedAt: null,
         updatedAt: new Date(),
         accesses: 0,
+        hasExpired: jest.fn().mockReturnValue(false),
       };
       jest.spyOn(userRepository, 'findUserById').mockResolvedValue(user);
       jest
@@ -280,6 +283,7 @@ describe('UserService', () => {
         deletedAt: null,
         updatedAt: new Date(),
         accesses: 0,
+        hasExpired: jest.fn().mockReturnValue(false),
       };
       jest
         .spyOn(shortenedUrlRepository, 'findShortenedUrlById')
