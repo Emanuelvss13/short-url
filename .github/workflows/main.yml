@@ -43,9 +43,9 @@ jobs:
       - name: Deploy to Server
         run: |
           ssh -o StrictHostKeyChecking=no ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            export NVM_DIR=~/.nvm
-            source ~/.nvm/nvm.sh   
             cd short-url
+            export NVM_DIR=~/.nvm
+            source ~/.nvm/nvm.sh 
             git pull origin main
             npm install
             npm run build
